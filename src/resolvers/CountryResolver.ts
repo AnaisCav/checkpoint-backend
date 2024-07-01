@@ -16,13 +16,27 @@ class CountryResolver {
   async createCountry(@Arg("data", { validate: true }) data: NewCountryInput) {
     const newCountry = new Country();
     Object.assign(newCountry, data);
-    const newCountryWithId = await newCountry.save();
-    return newCountryWithId;
+
+    await newCountry.save();
+
+    return Country.findOne({
+      relations: { continentCode: true },
+    });
   }
 
   @Query(() => [Country])
-  async getCountries() {
-    return await Country.find();
+  async getCountries(
+    @Arg("continentCode", () => String, { nullable: true })
+    continentCode?: string
+  ) {
+    return await Country.find({
+      relations: { continentCode: true },
+      where: {
+        continentCode: {
+          code: continentCode,
+        },
+      },
+    });
   }
 
   @Query(() => Country)

@@ -7,14 +7,14 @@ import {
   ManyToOne,
   JoinTable,
   ManyToMany,
+  OneToMany,
 } from "typeorm";
 import { ObjectType, Field, Int, InputType } from "type-graphql";
-import Continent from "./Continent";
-import { ObjectId } from "../types";
+import Country from "./Country";
 
 @Entity()
 @ObjectType()
-export default class Country extends BaseEntity {
+export default class Continent extends BaseEntity {
   @PrimaryGeneratedColumn()
   @Field(() => Int)
   id: number;
@@ -27,26 +27,16 @@ export default class Country extends BaseEntity {
   @Field()
   name: string;
 
-  @Column()
-  @Field()
-  emoji: string;
-
-  @Field()
-  @ManyToOne(() => Continent, (continent) => continent.countries)
-  continentCode: Continent;
+  @Field(() => [Country])
+  @OneToMany(() => Country, (country) => country.continentCode)
+  countries: Country[];
 }
 
 @InputType()
-export class NewCountryInput {
+export class NewContinentInput {
   @Field()
   code: string;
 
   @Field()
   name: string;
-
-  @Field()
-  emoji: string;
-
-  @Field()
-  continentCode: string;
 }
