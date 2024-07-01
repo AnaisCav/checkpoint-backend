@@ -21,18 +21,6 @@ class ContinentResolver {
     const newContinentWithId = await newContinent.save();
     return newContinentWithId;
   }
-
-  @Query(() => [Continent])
-  async getContinents() {
-    return await Continent.find();
-  }
-
-  @Query(() => Continent)
-  async getContinentByCode(@Arg("code", { nullable: true }) code: string) {
-    return await Continent.findOne({
-      where: { code },
-    });
-  }
 }
 
 export default ContinentResolver;
