@@ -19,11 +19,16 @@ class CountryResolver {
     const newCountryWithId = await newCountry.save();
     return newCountryWithId;
   }
+
   @Query(() => [Country])
-  async countries(@Arg("name", { nullable: true }) name: string) {
-    return await Country.find({
-      where: { name: name ? Like(`%${name}%`) : undefined },
-      order: { id: "desc" },
+  async getCountries() {
+    return await Country.find();
+  }
+
+  @Query(() => Country)
+  async getCountryByCode(@Arg("code", { nullable: true }) code: string) {
+    return await Country.findOne({
+      where: { code },
     });
   }
 }

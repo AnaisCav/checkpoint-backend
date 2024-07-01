@@ -33,5 +33,11 @@ export default class Country extends BaseEntity {
 @InputType()
 export class NewCountryInput {
   @Field()
+  code: string;
+
+  @Field()
   name: string;
+
+  @Field()
+  emoji: string;
 }
